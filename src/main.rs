@@ -56,23 +56,33 @@ fn get_link_name(link: &str) -> String {
     fields[fields.len()-1].to_string()
 }
 
-fn download_links(links: Vec<String>) -> Result<(), &'static str> {
-    for l in links {
-	let lname = get_link_name(&l);
+fn download_links(links: Vec<String>) -> Result<u32, &'static str> {
+    let mut downloaded = 0;
+    for l in &links {
+	let lname = get_link_name(l);
 	println!("Downloading file:{} name:{}", l, lname);
-	download_file(&l, lname).expect("Error on file download");
+	download_file(l, lname).expect("Error on file download");
+	downloaded += 1;
     }
-    Ok(())
+    if links.is_empty() && 0 == downloaded {
+	return Err("Unable to download any link");
+    }
+    Ok(downloaded)
 }
 
-fn parse(body: String) {
-    download_links(get_links(get_link_lines(body))).expect("Unable to dowload any package");
+fn parse(body: String) -> u32 {
+    match download_links(get_links(get_link_lines(body))) {
+	Ok(d) => d,
+	Err(e) => {
+	    panic!("{}", &e);
+	},
+    }
 }
 
 fn go(url: String) {
     let mut easy = Easy::new();
     easy.url(&url).unwrap();
-    easy.write_function(move |data| {
+    easy.write_function(|data| {
 	parse(std::str::from_utf8(data).unwrap().to_string());
 	Ok(data.len())
     }).unwrap();
