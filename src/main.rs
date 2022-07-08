@@ -64,7 +64,7 @@ fn download_links(links: Vec<String>) -> Result<u32, &'static str> {
 	download_file(l, lname).expect("Error on file download");
 	downloaded += 1;
     }
-    if links.is_empty() && 0 == downloaded {
+    if !links.is_empty() && 0 == downloaded {
 	return Err("Unable to download any link");
     }
     Ok(downloaded)
