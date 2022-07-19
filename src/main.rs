@@ -5,12 +5,12 @@ use std::io::prelude::*;
 
 const LINK_HTML: &str = "<a href";
 const FEDORA_PROJECT: &str = "fedoraproject.org";
+const DOWNLOAD_REDHAT: &str = "download.eng.bos.redhat.com";
 const RPM_EXTENSION: &str = ".rpm";
 
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
 struct Args {
-    /// Name of the person to greet
     #[clap(short, long, value_parser)]
     url: String,
 }
@@ -19,7 +19,8 @@ fn get_link_lines(body: String) -> Vec<String> {
     let split = body.split('\n');
     let mut lines = Vec::new();
     for s in split {
-	if s.contains(LINK_HTML) && s.contains(FEDORA_PROJECT) && s.contains (RPM_EXTENSION) {
+	if s.contains(LINK_HTML) && s.contains (RPM_EXTENSION) && ( s.contains(FEDORA_PROJECT) ||
+                                                                    s.contains(DOWNLOAD_REDHAT) ) {
 	    lines.push(s.to_string());
 	}
     }
