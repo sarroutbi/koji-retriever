@@ -4,6 +4,7 @@ use std::fs::File;
 use std::io::prelude::*;
 
 const LINK_HTML: &str = "<a href";
+const LINK_HTML_EQUAL: &str = "<a href=";
 const FEDORA_PROJECT: &str = "fedoraproject.org";
 const DOWNLOAD_REDHAT: &str = "download.eng.bos.redhat.com";
 const RPM_EXTENSION: &str = ".rpm";
@@ -30,8 +31,11 @@ fn get_link_lines(body: String) -> Vec<String> {
 fn get_links(link_lines: Vec<String>) -> Vec<String> {
     let mut links = Vec::new();
     for s in link_lines {
-	let fields: Vec<&str> = s.split('"').collect();
-	links.push(fields[1].to_string());
+	let fields: Vec<&str> = s.split(LINK_HTML_EQUAL).collect();
+	if fields.len() > 2 {
+	    let fields2: Vec<&str> = fields[2].split('>').collect();
+	    links.push(fields2[0].to_string().replace(&['\"'][..], ""));
+	}
     }
     links
 }
@@ -54,7 +58,7 @@ pub fn download_file(url: &str, path: String) -> Result<(), Box<dyn std::error::
 
 fn get_link_name(link: &str) -> String {
     let fields: Vec<&str> = link.split('/').collect();
-    fields[fields.len()-1].to_string()
+    fields[fields.len()-1].to_string().replace(&['\"'][..], "")
 }
 
 fn download_links(links: Vec<String>) -> Result<u32, &'static str> {
