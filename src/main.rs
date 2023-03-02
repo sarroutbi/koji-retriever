@@ -8,12 +8,15 @@ const LINK_HTML_EQUAL: &str = "<a href=";
 const FEDORA_PROJECT: &str = "fedoraproject.org";
 const DOWNLOAD_REDHAT: &str = "download.eng.bos.redhat.com";
 const RPM_EXTENSION: &str = ".rpm";
+static mut VERBOSE: bool = false;
 
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
 struct Args {
     #[clap(short, long, value_parser)]
     url: String,
+    #[clap(short, long, value_parser)]
+    verbose: bool,
 }
 
 fn get_link_lines(body: String) -> Vec<String> {
@@ -28,9 +31,18 @@ fn get_link_lines(body: String) -> Vec<String> {
     lines
 }
 
+fn dump_verbose(s: &String) {
+    unsafe {
+	if VERBOSE {
+	    println!("{}", s);
+	}
+    }
+}
+
 fn get_links(link_lines: Vec<String>) -> Vec<String> {
     let mut links = Vec::new();
     for s in link_lines {
+	dump_verbose(&("LINK LINE:".to_owned() + &s));
 	let fields: Vec<&str> = s.split(LINK_HTML_EQUAL).collect();
 	if fields.len() > 2 {
 	    let fields2: Vec<&str> = fields[2].split('>').collect();
@@ -84,9 +96,10 @@ fn parse(body: String) -> u32 {
     }
 }
 
-fn go(url: String) {
+fn go() {
     let mut easy = Easy::new();
-    easy.url(&url).unwrap();
+    easy.url(&Args::parse().url).unwrap();
+    unsafe { VERBOSE = Args::parse().verbose; }
     easy.write_function(|data| {
 	parse(std::str::from_utf8(data).unwrap().to_string());
 	Ok(data.len())
@@ -95,5 +108,5 @@ fn go(url: String) {
 }
 
 fn main() {
-    go(Args::parse().url);
+    go();
 }
