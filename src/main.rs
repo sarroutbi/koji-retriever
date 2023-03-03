@@ -7,6 +7,7 @@ const LINK_HTML: &str = "<a href";
 const LINK_HTML_EQUAL: &str = "<a href=";
 const FEDORA_PROJECT: &str = "fedoraproject.org";
 const DOWNLOAD_REDHAT: &str = "download.eng.bos.redhat.com";
+const DOWNLOAD_KOJIHUB: &str = "kojihub.stream.rdu2.redhat.com";
 const RPM_EXTENSION: &str = ".rpm";
 static mut VERBOSE: bool = false;
 
@@ -23,8 +24,10 @@ fn get_link_lines(body: String) -> Vec<String> {
     let split = body.split('\n');
     let mut lines = Vec::new();
     for s in split {
+	dump_verbose(&("S LINK LINE:".to_owned() + &s));
 	if s.contains(LINK_HTML) && s.contains (RPM_EXTENSION) && ( s.contains(FEDORA_PROJECT) ||
-                                                                    s.contains(DOWNLOAD_REDHAT) ) {
+								    s.contains(DOWNLOAD_REDHAT) ||
+								    s.contains(DOWNLOAD_KOJIHUB) ) {
 	    lines.push(s.to_string());
 	}
     }
