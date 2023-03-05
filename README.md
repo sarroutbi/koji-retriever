@@ -24,10 +24,11 @@ $ ./koji-retriever -h
 koji-retriever 0.1.0
 
 USAGE:
-    koji-retriever --url <URL>
+    koji-retriever [OPTIONS] --url <URL>
 
 OPTIONS:
     -h, --help         Print help information
     -u, --url <URL>
+    -v, --verbose
     -V, --version      Print version information
 ```
