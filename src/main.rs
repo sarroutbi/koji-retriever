@@ -18,13 +18,15 @@ struct Args {
     url: String,
     #[clap(short, long, value_parser)]
     verbose: bool,
+    #[clap(short, long, value_parser)]
+    directory: Option<String>,
 }
 
 fn get_link_lines(body: String) -> Vec<String> {
     let split = body.split('\n');
     let mut lines = Vec::new();
     for s in split {
-        dump_verbose(&("S LINK LINE:".to_owned() + s));
+        dump_verbose(&("POSSIBLE LINK LINE:".to_owned() + s));
         if s.contains(LINK_HTML) && s.contains (RPM_EXTENSION) && ( s.contains(FEDORA_PROJECT) ||
                                                                     s.contains(DOWNLOAD_REDHAT) ||
                                                                     s.contains(DOWNLOAD_KOJIHUB) ) {
@@ -76,12 +78,18 @@ fn get_link_name(link: &str) -> String {
     fields[fields.len()-1].to_string().replace(&['\"'][..], "")
 }
 
-fn download_links(links: Vec<String>) -> Result<u32, &'static str> {
+fn download_links(links: Vec<String>, dpath: Option<String>) -> Result<u32, &'static str> {
     let mut downloaded = 0;
     for l in &links {
         let lname = get_link_name(l);
-        println!("Downloading file:{} name:{}", l, lname);
-        download_file(l, lname).expect("Error on file download");
+        let mut download_path: String = "".to_string();
+        if let Some(ref x) = dpath {
+            download_path.push_str(x);
+            download_path.push('/');
+        }
+        download_path.push_str(&lname.to_owned());
+        println!("Downloading file:{} download path:{}", l, download_path);
+        download_file(l, download_path).expect("Error on file download");
         downloaded += 1;
     }
     if !links.is_empty() && 0 == downloaded {
@@ -90,8 +98,8 @@ fn download_links(links: Vec<String>) -> Result<u32, &'static str> {
     Ok(downloaded)
 }
 
-fn parse(body: String) -> u32 {
-    match download_links(get_links(get_link_lines(body))) {
+fn parse(body: String, dpath: Option<String>) -> u32 {
+    match download_links(get_links(get_link_lines(body)), dpath) {
         Ok(d) => d,
         Err(e) => {
             panic!("{}", &e);
@@ -104,7 +112,7 @@ fn go() {
     easy.url(&Args::parse().url).unwrap();
     unsafe { VERBOSE = Args::parse().verbose; }
     easy.write_function(|data| {
-        parse(std::str::from_utf8(data).unwrap().to_string());
+        parse(std::str::from_utf8(data).unwrap().to_string(), Args::parse().directory);
         Ok(data.len())
     }).unwrap();
     easy.perform().unwrap();
