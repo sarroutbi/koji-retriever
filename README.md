@@ -27,6 +27,7 @@ USAGE:
     koji-retriever [OPTIONS] --url <URL>
 
 OPTIONS:
+    -d, --directory <DIRECTORY>
     -h, --help         Print help information
     -u, --url <URL>
     -v, --verbose
