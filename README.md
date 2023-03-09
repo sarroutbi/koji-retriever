@@ -37,7 +37,7 @@ OPTIONS:
 
 ## Tests
 
-koji-retriever include minimal tests to check stability. 
+koji-retriever includes minimal tests to check stability. 
 At this moment, only CLI function tests exist.
 In the future, unit tests will be included too.
 Tests in koji-retriever are executed through cargo tool, as usual in Rust:
