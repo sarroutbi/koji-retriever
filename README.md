@@ -5,6 +5,7 @@
 - [Introduction](#introduction)
 - [Versions](#versions)
 - [Usage](#usage)
+- [Tests](#tests)
 
 ## Introduction
 
@@ -32,4 +33,26 @@ OPTIONS:
     -u, --url <URL>
     -v, --verbose
     -V, --version      Print version information
+```
+
+## Tests
+
+koji-retriever include minimal tests to check stability. 
+At this moment, only CLI function tests exist.
+In the future, unit tests will be included too.
+Tests in koji-retriever are executed through cargo tool, as usual in Rust:
+
+```bash
+
+$ cargo test
+...
+sarroutb@fedora ~/RedHat/TASKS/KOJI_RPM_RETRIEVER/koji-retriever (main)$ cargo test
+    Finished test [unoptimized + debuginfo] target(s) in 0.04s
+     Running unittests src/main.rs (target/debug/deps/koji_retriever-3200482699bbff1f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/koji-retriever-test.rs (target/debug/deps/koji_retriever_test-6e4a176e5c788312)
 ```
