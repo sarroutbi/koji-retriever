@@ -46,7 +46,6 @@ Tests in koji-retriever are executed through *cargo* tool, as usual in Rust:
 
 $ cargo test
 ...
-sarroutb@fedora ~/RedHat/TASKS/KOJI_RPM_RETRIEVER/koji-retriever (main)$ cargo test
     Finished test [unoptimized + debuginfo] target(s) in 0.04s
      Running unittests src/main.rs (target/debug/deps/koji_retriever-3200482699bbff1f)
 
