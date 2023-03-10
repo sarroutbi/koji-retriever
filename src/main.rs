@@ -27,9 +27,12 @@ fn get_link_lines(body: String) -> Vec<String> {
     let mut lines = Vec::new();
     for s in split {
         dump_verbose(&("POSSIBLE LINK LINE:".to_owned() + s));
-        if s.contains(LINK_HTML) && s.contains (RPM_EXTENSION) && ( s.contains(FEDORA_PROJECT) ||
-                                                                    s.contains(DOWNLOAD_REDHAT) ||
-                                                                    s.contains(DOWNLOAD_KOJIHUB) ) {
+        if s.contains(LINK_HTML)
+            && s.contains(RPM_EXTENSION)
+            && (s.contains(FEDORA_PROJECT)
+                || s.contains(DOWNLOAD_REDHAT)
+                || s.contains(DOWNLOAD_KOJIHUB))
+        {
             lines.push(s.to_string());
         }
     }
@@ -75,7 +78,9 @@ pub fn download_file(url: &str, path: String) -> Result<(), Box<dyn std::error::
 
 fn get_link_name(link: &str) -> String {
     let fields: Vec<&str> = link.split('/').collect();
-    fields[fields.len()-1].to_string().replace(&['\"'][..], "")
+    fields[fields.len() - 1]
+        .to_string()
+        .replace(&['\"'][..], "")
 }
 
 fn download_links(links: Vec<String>, dpath: Option<String>) -> Result<u32, &'static str> {
@@ -103,18 +108,24 @@ fn parse(body: String, dpath: Option<String>) -> u32 {
         Ok(d) => d,
         Err(e) => {
             panic!("{}", &e);
-        },
+        }
     }
 }
 
 fn go() {
     let mut easy = Easy::new();
     easy.url(&Args::parse().url).unwrap();
-    unsafe { VERBOSE = Args::parse().verbose; }
+    unsafe {
+        VERBOSE = Args::parse().verbose;
+    }
     easy.write_function(|data| {
-        parse(std::str::from_utf8(data).unwrap().to_string(), Args::parse().directory);
+        parse(
+            std::str::from_utf8(data).unwrap().to_string(),
+            Args::parse().directory,
+        );
         Ok(data.len())
-    }).unwrap();
+    })
+    .unwrap();
     easy.perform().unwrap();
 }
 
