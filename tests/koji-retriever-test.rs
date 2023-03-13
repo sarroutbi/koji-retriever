@@ -22,3 +22,17 @@ fn url_does_not_exist_test() -> Result<(), Box<dyn std::error::Error>> {
     cmd.assert().failure();
     Ok(())
 }
+
+#[test]
+fn url_existing_verbose_test() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin("koji-retriever")?;
+    cmd.arg("-u")
+        .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2166955")
+        .arg("-v")
+        .arg("-d")
+        .arg("/tmp");
+    cmd.assert().success().stdout(predicate::str::contains(
+        "/tmp/pykickstart-3.45-1.fc39.src.rpm",
+    ));
+    Ok(())
+}
