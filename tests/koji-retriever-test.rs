@@ -34,5 +34,10 @@ fn url_existing_verbose_test() -> Result<(), Box<dyn std::error::Error>> {
     cmd.assert().success().stdout(predicate::str::contains(
         "/tmp/pykickstart-3.45-1.fc39.src.rpm",
     ));
+    let standard_output = cmd
+        .assert()
+        .success()
+        .try_stdout(predicate::str::is_empty());
+    assert!(standard_output.is_err());
     Ok(())
 }
