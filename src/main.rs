@@ -37,11 +37,11 @@ struct Args {
     directory: Option<String>,
 }
 
-fn parse(body: String, dpath: Option<String>, v: bool) -> u32 {
-    let verbose = verbose::Verbose::new(v);
+fn parse(body: String) -> u32 {
+    let verbose = verbose::Verbose::new(Args::parse().verbose);
     match links::download_links(
         links::get_links(links::get_link_lines(body), verbose),
-        dpath,
+        Args::parse().directory,
     ) {
         Ok(d) => d,
         Err(e) => {
@@ -54,11 +54,7 @@ fn go() {
     let mut easy = Easy::new();
     easy.url(&Args::parse().url).unwrap();
     easy.write_function(|data| {
-        parse(
-            std::str::from_utf8(data).unwrap().to_string(),
-            Args::parse().directory,
-            Args::parse().verbose,
-        );
+        parse(std::str::from_utf8(data).unwrap().to_string());
         Ok(data.len())
     })
     .unwrap();
