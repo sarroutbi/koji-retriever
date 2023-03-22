@@ -55,10 +55,11 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
      Running tests/koji-retriever-test.rs (target/debug/deps/koji_retriever_test-6e4a176e5c788312)
 
-running 3 tests
+running 4 tests
 test url_does_not_exist_test ... ok
+test url_existing_test_mode_verbose_test ... ok
 test url_existing_test ... ok
 test url_existing_verbose_test ... ok
 
-test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.98s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.42s
 ```
