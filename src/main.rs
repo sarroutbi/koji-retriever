@@ -35,13 +35,15 @@ struct Args {
     verbose: bool,
     #[clap(short, long, value_parser)]
     directory: Option<String>,
+    #[clap(short, long, value_parser)]
+    test: bool,
 }
 
 fn parse(body: String) -> u32 {
     let verbose = verbose::Verbose::new(Args::parse().verbose);
     match links::download_links(
         links::get_links(links::get_link_lines(body), verbose),
-        Args::parse().directory,
+        links::DownloadData::new(Args::parse().directory, Args::parse().test),
     ) {
         Ok(d) => d,
         Err(e) => {

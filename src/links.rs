@@ -33,6 +33,23 @@ const LINK_HTML: &str = "<a href";
 const LINK_HTML_EQUAL: &str = "<a href=";
 const RPM_EXTENSION: &str = ".rpm";
 
+pub struct DownloadData {
+    directory: Option<String>,
+    test: bool,
+}
+
+impl DownloadData {
+    pub fn directory(&self) -> Option<String> {
+        self.directory.as_ref().map(|x| x.to_string())
+    }
+    pub fn test(&self) -> bool {
+        self.test
+    }
+    pub fn new(directory: Option<String>, test: bool) -> DownloadData {
+        DownloadData { directory, test }
+    }
+}
+
 pub fn get_link_lines(body: String) -> Vec<String> {
     let split = body.split('\n');
     let mut lines = Vec::new();
@@ -62,21 +79,25 @@ pub fn get_links(link_lines: Vec<String>, v: verbose::Verbose) -> Vec<String> {
     links
 }
 
-pub fn download_links(links: Vec<String>, dpath: Option<String>) -> Result<u32, &'static str> {
+pub fn download_links(links: Vec<String>, ddata: DownloadData) -> Result<u32, &'static str> {
     let mut downloaded = 0;
     for l in &links {
         let lname = get_link_name(l);
         let mut download_path: String = "".to_string();
-        if let Some(ref x) = dpath {
+        if let Some(ref x) = ddata.directory() {
             download_path.push_str(x);
             download_path.push('/');
         }
         download_path.push_str(&lname.to_owned());
-        println!("Downloading file:{} download path:{}", l, download_path);
-        download_file(l, download_path).expect("Error on file download");
-        downloaded += 1;
+        if ddata.test() {
+            println!("Test mode: file:{} path:{}", l, download_path);
+        } else {
+            println!("Download file:{} Download path:{}", l, download_path);
+            download_file(l, download_path).expect("Error on file download");
+            downloaded += 1;
+        }
     }
-    if !links.is_empty() && 0 == downloaded {
+    if !links.is_empty() && 0 == downloaded && !ddata.test {
         return Err("Unable to download any link");
     }
     Ok(downloaded)
