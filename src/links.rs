@@ -54,22 +54,24 @@ pub fn get_link_lines(body: String) -> Vec<String> {
     let split = body.split('\n');
     let mut lines = Vec::new();
     for s in split {
+        verbose::dump_verbose(&("get_link_lines: PARSING LINE:".to_owned() + s));
         if s.contains(LINK_HTML)
             && s.contains(RPM_EXTENSION)
             && (s.contains(FEDORA_PROJECT)
                 || s.contains(DOWNLOAD_REDHAT)
                 || s.contains(DOWNLOAD_KOJIHUB))
         {
+            verbose::dump_verbose(&("get_link_lines: LINK LINE:".to_owned() + s));
             lines.push(s.to_string());
         }
     }
     lines
 }
 
-pub fn get_links(link_lines: Vec<String>, v: verbose::Verbose) -> Vec<String> {
+pub fn get_links(link_lines: Vec<String>) -> Vec<String> {
     let mut links = Vec::new();
     for s in link_lines {
-        v.dump_verbose(&("LINK LINE:".to_owned() + &s));
+        verbose::dump_verbose(&("get_links: LINK LINE:".to_owned() + &s));
         let fields: Vec<&str> = s.split(LINK_HTML_EQUAL).collect();
         if fields.len() > 2 {
             let fields2: Vec<&str> = fields[2].split('>').collect();

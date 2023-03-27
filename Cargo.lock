@@ -209,6 +209,7 @@ dependencies = [
  "assert_cmd",
  "clap",
  "curl",
+ "lazy_static",
  "predicates",
 ]
 
