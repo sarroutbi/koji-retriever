@@ -40,9 +40,9 @@ struct Args {
 }
 
 fn parse(body: String) -> u32 {
-    let verbose = verbose::Verbose::new(Args::parse().verbose);
+    verbose::is_verbose(Args::parse().verbose);
     match links::download_links(
-        links::get_links(links::get_link_lines(body), verbose),
+        links::get_links(links::get_link_lines(body)),
         links::DownloadData::new(Args::parse().directory, Args::parse().test),
     ) {
         Ok(d) => d,

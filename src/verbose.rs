@@ -20,17 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+use lazy_static::lazy_static;
+use std::sync::Mutex;
+
+lazy_static! {
+    static ref VERBOSE: Mutex<Verbose> = Mutex::new(Verbose::new());
+}
+
 pub struct Verbose {
     verbose: bool,
 }
 
-impl Verbose {
-    pub fn dump_verbose(&self, s: &String) {
-        if self.verbose {
-            println!("{}", s);
-        }
+pub fn is_verbose(v: bool) {
+    VERBOSE.lock().unwrap().verbose = v;
+}
+
+pub fn dump_verbose(s: &String) {
+    if VERBOSE.lock().unwrap().verbose {
+        println!("{}", s);
     }
-    pub fn new(verbose: bool) -> Verbose {
-        Verbose { verbose }
+}
+
+impl Verbose {
+    fn new() -> Verbose {
+        Verbose { verbose: true }
     }
 }
