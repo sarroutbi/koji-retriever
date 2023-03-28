@@ -66,3 +66,17 @@ fn url_existing_test_mode_verbose_test() -> Result<(), Box<dyn std::error::Error
     assert!(standard_output.is_err());
     Ok(())
 }
+
+#[test]
+fn url_existing_slash_end_directory_test() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin(KOJI_RETRIEVER_BINARY)?;
+    cmd.arg("-u")
+        .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2166955")
+        .arg("-v")
+        .arg("-d")
+        .arg("/tmp/");
+    cmd.assert().success().stdout(predicate::str::contains(
+        "/tmp/pykickstart-3.45-1.fc39.src.rpm",
+    ));
+    Ok(())
+}
