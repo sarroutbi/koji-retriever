@@ -88,7 +88,9 @@ pub fn download_links(links: Vec<String>, ddata: DownloadData) -> Result<u32, &'
         let mut download_path: String = "".to_string();
         if let Some(ref x) = ddata.directory() {
             download_path.push_str(x);
-            download_path.push('/');
+            if &download_path[download_path.len() - 1..] != "/" {
+                download_path.push('/');
+            }
         }
         download_path.push_str(&lname.to_owned());
         if ddata.test() {
