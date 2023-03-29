@@ -55,6 +55,12 @@ jobs:
     - name: Gather data (coverage)
       id: coverage
       uses: actions-rs/grcov@v0.1
+    - name: Output show (coverage)
+      run: |
+        set -eu
+        echo "COVERAGE:$(cat ${COV_REPORT_DIR}/badges/flat.svg | egrep '<title>coverage: ' | egrep -o "[0-9]{1,2}%" | sed 's/ //g')"
+      env:
+        COV_REPORT_DIR: ${{ steps.coverage.outputs.report }}
     - name: Report in PR status for the current commit (coverage)
       if: github.ref_name != 'main'
       run: |
