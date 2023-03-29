@@ -33,3 +33,39 @@ jobs:
       run: cargo test --verbose
     - name: Clippy
       run: cargo clippy --verbose
+    - name: Clean (coverage)
+      run: cargo clean --verbose
+    - name: Setup toolchain (coverage)
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: nightly
+        override: true
+        profile: minimal
+    - name: Install grcov (coverage)
+      run: cargo install grcov --verbose
+    - name: Run tests (coverage)
+      uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --all --no-fail-fast
+      env:
+        CARGO_INCREMENTAL: '0'
+        RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests -Cinstrument-coverage'
+        RUSTDOCFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests -Cinstrument-coverage'
+    - name: Gather data (coverage)
+      id: coverage
+      uses: actions-rs/grcov@v0.1
+    - name: Report in PR status for the current commit (coverage)
+      if: github.ref_name != 'main'
+      run: |
+        set -eu
+        tree ${COV_REPORT_DIR}
+        total=$(cat ${COV_REPORT_DIR}/badges/flat.svg | egrep '<title>coverage: ' | egrep -o "[0-9]{1,2}" | sed 's/ //g')
+        curl -s "https://sarroutbi:${GITHUB_TOKEN}@api.github.com/repos/sarroutbi/koji-retriever/statuses/${COMMIT_SHA}"\
+          -d "{\"state\": \"success\",\"target_url\": \"https://github.com/sarroutbi/koji-retriever/pull/${PULL_NUMBER}/checks?check_run_id=${RUN_ID}\",\"description\": \"${total}%\",\"context\": \"Measured coverage\"}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+        RUN_ID: ${{ github.run_id }}
+        PULL_NUMBER: ${{ github.event.pull_request.number }}
+        COV_REPORT_DIR: ${{ steps.coverage.outputs.report }}

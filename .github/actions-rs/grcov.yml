@@ -1,0 +1,10 @@
+branch: true
+llvm: true
+output-type: html
+output-path: ./coverage/html
+prefix-dir: /home/runner/work/koji-retriever/koji-retriever/
+
+ignore:
+- "/*"
+- "C:/*"
+- "../*"
