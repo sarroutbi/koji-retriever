@@ -63,19 +63,20 @@ Tests in koji-retriever are executed through *cargo* tool, as usual in Rust:
 $ cargo test
 ...
     Finished test [unoptimized + debuginfo] target(s) in 0.04s
-     Running unittests src/main.rs (target/debug/deps/koji_retriever-3200482699bbff1f)
+     Running unittests src/main.rs (target/debug/deps/koji_retriever-ed1f26008c95b0a7)
 
 running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running tests/koji-retriever-test.rs (target/debug/deps/koji_retriever_test-6e4a176e5c788312)
+     Running tests/koji-retriever-test.rs (target/debug/deps/koji_retriever_test-d0e74b913acf429a)
 
-running 4 tests
+running 5 tests
 test url_does_not_exist_test ... ok
 test url_existing_test_mode_verbose_test ... ok
 test url_existing_test ... ok
+test url_existing_slash_end_directory_test ... ok
 test url_existing_verbose_test ... ok
 
-test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.42s
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.28s
 ```
