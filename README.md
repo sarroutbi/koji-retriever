@@ -80,3 +80,28 @@ test url_existing_verbose_test ... ok
 
 test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.28s
 ```
+
+## Coverage Tests
+This section describes how to execute coverage tests.
+
+- Install *grcov* and *llvm-tools*: First of all, installation of appropriate tools needs to be done:
+
+```bash
+$ cargo install grcov
+$ rustup component add llvm-tools-preview
+```
+
+- Then, appropriate compilation flags need to be exported:
+
+```bash
+$ export RUSTFLAGS="-Cinstrument-coverage"
+$ export LLVM_PROFILE_FILE="koji-retriever-%p-%m.profraw"
+```
+
+- Finally, execute tests via *cargo test*, generate report with *grcov* (in HTML mode for this example) and open it with your prefered browser:
+
+```bash
+$ cargo test
+$ grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./target/debug/coverage/
+$ firefox ./target/debug/coverage/index.html
+```
