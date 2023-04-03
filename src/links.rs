@@ -73,9 +73,11 @@ pub fn get_links(link_lines: Vec<String>) -> Vec<String> {
     for s in link_lines {
         verbose::dump_verbose(&("get_links: LINK LINE:".to_owned() + &s));
         let fields: Vec<&str> = s.split(LINK_HTML_EQUAL).collect();
-        if fields.len() > 2 {
-            let fields2: Vec<&str> = fields[2].split('>').collect();
-            links.push(fields2[0].to_string().replace(&['\"'][..], ""));
+        if fields.len() >= 2 {
+            let fields2: Vec<&str> = fields[fields.len() - 1].split('>').collect();
+            let l = fields2[0].to_string().replace(&['\"'][..], "");
+            links.push(l.clone());
+            verbose::dump_verbose(&("get_links: PUSH LINK:".to_owned() + &l));
         }
     }
     links
@@ -97,8 +99,11 @@ pub fn download_links(links: Vec<String>, ddata: DownloadData) -> Result<u32, &'
             println!("Test mode: file:{} path:{}", l, download_path);
         } else {
             println!("Download file:{} Download path:{}", l, download_path);
-            download_file(l, download_path).expect("Error on file download");
-            downloaded += 1;
+            if download_file(l, download_path).is_err() {
+                println!("Unable to download link:{}", l);
+            } else {
+                downloaded += 1;
+            }
         }
     }
     if !links.is_empty() && 0 == downloaded && !ddata.test {
