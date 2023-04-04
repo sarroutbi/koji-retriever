@@ -32,7 +32,7 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
     - name: Clippy
-      run: cargo clippy --verbose
+      run: cargo clippy --verbose -- --deny "warnings"
     - name: Clean (coverage)
       run: cargo clean --verbose
     - name: Setup toolchain (coverage)
