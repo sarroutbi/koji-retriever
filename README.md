@@ -7,6 +7,7 @@
 - [Compilation](#compilation)
 - [Usage](#usage)
 - [Tests](#tests)
+- [Coverage Tests](#coverage-tests)
 
 ## Introduction
 
