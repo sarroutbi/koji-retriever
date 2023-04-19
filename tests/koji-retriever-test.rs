@@ -25,11 +25,13 @@ use predicates::prelude::*; // Used for writing assertions
 use std::process::Command; // Run programs
 
 const KOJI_RETRIEVER_BINARY: &str = "koji-retriever";
+const LS_CMD: &str = "/usr/bin/ls";
+const RM_CMD: &str = "/usr/bin/rm";
 
 #[test]
 fn url_existing_file_does_not_exist_in_test_mode_test() -> Result<(), Box<dyn std::error::Error>> {
     // Clean previous downloads (if any)
-    let mut rm_cmd = Command::cargo_bin("/usr/bin/rm")?;
+    let mut rm_cmd = Command::cargo_bin(RM_CMD)?;
     rm_cmd
         .arg("-v")
         .arg("-f")
@@ -41,7 +43,7 @@ fn url_existing_file_does_not_exist_in_test_mode_test() -> Result<(), Box<dyn st
         .arg("/tmp")
         .arg("-t");
     cmd.assert().success();
-    let mut cmd_ls = Command::cargo_bin("/usr/bin/ls")?;
+    let mut cmd_ls = Command::cargo_bin(LS_CMD)?;
     cmd_ls.arg("/tmp/pykickstart-3.47-1.fc38.src.rpm");
     cmd_ls
         .assert()
@@ -120,7 +122,7 @@ fn url_existing_slash_end_directory_test() -> Result<(), Box<dyn std::error::Err
         .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2166955")
         .arg("-v")
         .arg("-d")
-        .arg("/tmp/");
+        .arg("/tmp");
     cmd.assert().success().stdout(predicate::str::contains(
         "/tmp/pykickstart-3.45-1.fc39.src.rpm",
     ));
@@ -128,7 +130,7 @@ fn url_existing_slash_end_directory_test() -> Result<(), Box<dyn std::error::Err
 }
 
 #[test]
-fn url_existing_file_exists_test() -> Result<(), Box<dyn std::error::Error>> {
+fn url_existing_files_exists_test() -> Result<(), Box<dyn std::error::Error>> {
     let mut cmd = Command::cargo_bin(KOJI_RETRIEVER_BINARY)?;
     cmd.arg("-u")
         .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2166955")
@@ -137,10 +139,20 @@ fn url_existing_file_exists_test() -> Result<(), Box<dyn std::error::Error>> {
     cmd.assert().success().stdout(predicate::str::contains(
         "/tmp/pykickstart-3.45-1.fc39.src.rpm",
     ));
-    let mut cmd_ls = Command::cargo_bin("/usr/bin/ls")?;
+    let mut cmd_ls = Command::cargo_bin(LS_CMD)?;
     cmd_ls.arg("/tmp/pykickstart-3.45-1.fc39.src.rpm");
     cmd.assert().success().stdout(predicate::str::contains(
         "/tmp/pykickstart-3.45-1.fc39.src.rpm",
+    ));
+    cmd_ls = Command::cargo_bin(LS_CMD)?;
+    cmd_ls.arg("/tmp/pykickstart-3.45-1.fc39.noarch.rpm");
+    cmd.assert().success().stdout(predicate::str::contains(
+        "/tmp/pykickstart-3.45-1.fc39.noarch.rpm",
+    ));
+    cmd_ls = Command::cargo_bin(LS_CMD)?;
+    cmd_ls.arg("/tmp/python3-kickstart-3.45-1.fc39.noarch.rpm");
+    cmd.assert().success().stdout(predicate::str::contains(
+        "/tmp/python3-kickstart-3.45-1.fc39.noarch.rpm",
     ));
     Ok(())
 }
