@@ -130,7 +130,7 @@ fn url_existing_slash_end_directory_test() -> Result<(), Box<dyn std::error::Err
 }
 
 #[test]
-fn url_existing_files_exists_test() -> Result<(), Box<dyn std::error::Error>> {
+fn url_existing_files_exist_test() -> Result<(), Box<dyn std::error::Error>> {
     let mut cmd = Command::cargo_bin(KOJI_RETRIEVER_BINARY)?;
     cmd.arg("-u")
         .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2166955")
