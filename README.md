@@ -60,7 +60,8 @@ At this moment, only CLI function tests exist.
 Tests in koji-retriever are executed through *cargo* tool, as usual in Rust:
 
 ```bash
-
+$ cargo test
+...
     Finished test [unoptimized + debuginfo] target(s) in 0.04s
      Running unittests src/main.rs (target/debug/deps/koji_retriever-d8e7d3952c51b846)
 
@@ -97,6 +98,11 @@ test verbose_test ... ok
 test verbose_default_test ... ok
 
 test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+```
+
+Option to execute tests in release mode is also possible through *--release* option:
+```bash
+$ cargo test --release
 ```
 
 ## Coverage Tests
