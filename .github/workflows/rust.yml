@@ -23,33 +23,33 @@ jobs:
         stable: [true]
     steps:
       - uses: actions/checkout@v3
-      - name: Build (release)
+      - name: "Build (release)"
         run: cargo build --release --verbose
-      - name: Run tests (release)
+      - name: "Run tests (release)"
         run: cargo test --release --verbose
-      - name: Build
+      - name: "Build"
         run: cargo build --verbose
-      - name: Run tests
+      - name: "Run tests"
         run: cargo test --verbose
-      - name: Run tests (memory safety)
+      - name: "Run tests (memory safety)"
         run: |
           type dnf 2>/dev/null 1>/dev/null && sudo dnf install -y valgrind || :
           type apt 2>/dev/null 1>/dev/null && sudo apt install -y valgrind || :
           cargo install cargo-valgrind
           cargo valgrind test --verbose
-      - name: Clippy
+      - name: "Clippy"
         run: cargo clippy --verbose -- --deny "warnings"
-      - name: Clean (coverage)
+      - name: "Clean (coverage)"
         run: cargo clean --verbose
-      - name: Setup toolchain (coverage)
+      - name: "Setup toolchain (coverage)"
         uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly
           override: true
           profile: minimal
-      - name: Install grcov (coverage)
+      - name: "Install grcov (coverage)"
         run: cargo install grcov --verbose
-      - name: Run tests (coverage)
+      - name: "Run tests (coverage)"
         uses: actions-rs/cargo@v1
         with:
           command: test
@@ -58,16 +58,16 @@ jobs:
           CARGO_INCREMENTAL: '0'
           RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests -Cinstrument-coverage'
           RUSTDOCFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests -Cinstrument-coverage'
-      - name: Gather data (coverage)
+      - name: "Gather data (coverage)"
         id: coverage
         uses: actions-rs/grcov@v0.1
-      - name: Output show (coverage)
+      - name: "Output show (coverage)"
         run: |
           set -eu
           echo "COVERAGE:$(cat ${COV_REPORT_DIR}/badges/flat.svg | egrep '<title>coverage: ' | egrep -o "[0-9]{1,2}%" | sed 's/ //g')"
         env:
           COV_REPORT_DIR: ${{ steps.coverage.outputs.report }}
-      - name: Report in PR status for the current commit (coverage)
+      - name: "Report in PR status for the current commit (coverage)"
         if: github.ref_name != 'main'
         run: |
           set -eu
@@ -81,3 +81,15 @@ jobs:
           RUN_ID: ${{ github.run_id }}
           PULL_NUMBER: ${{ github.event.pull_request.number }}
           COV_REPORT_DIR: ${{ steps.coverage.outputs.report }}
+
+      - name: "HTML search files"
+        run: |
+          tree
+          find . -iname *.html -print
+      - name: "HTML view (coverage)"
+        uses: saadmk11/comment-website-screenshot@v0.5
+        with:
+          # Capture Screenshots of Changed HTML Files
+          capture_changed_html_files: yes
+          # Comma separated paths to any other HTML File
+          capture_html_file_paths: "coverage/html/index.html"
