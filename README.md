@@ -108,7 +108,7 @@ $ cargo test --release
 ## Coverage Tests
 This section describes how to execute coverage tests.
 
-- Install *grcov* and *llvm-tools*: First of all, installation of appropriate tools needs to be done:
+- Install `grcov` and `llvm-tools`: First of all, installation of appropriate tools needs to be done:
 
 ```bash
 $ cargo install grcov
