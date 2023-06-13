@@ -1,3 +1,6 @@
+[![Rust](https://github.com/sarroutbi/koji-retriever/actions/workflows/rust.yaml/badge.svg)](https://github.com/sarroutbi/koji-retriever/actions/workflows/rust.yaml)\
+[![Spellcheck](https://github.com/sarroutbi/koji-retriever/actions/workflows/spellcheck.yaml/badge.svg)](https://github.com/sarroutbi/koji-retriever/actions/workflows/spellcheck.yaml)
+
 # koji-retriever
 
 ## Contents
