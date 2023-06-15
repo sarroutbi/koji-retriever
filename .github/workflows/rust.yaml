@@ -43,6 +43,8 @@ jobs:
           cargo valgrind test --verbose
       - name: Clippy
         run: cargo clippy --verbose -- --deny "warnings"
+      - name: Check formatting
+        run: cargo fmt --all -- --check
       - name: Clean (coverage)
         run: cargo clean --verbose
       - name: Setup toolchain (coverage)
