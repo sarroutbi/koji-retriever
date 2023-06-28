@@ -5,6 +5,15 @@ on:
     paths:
       - '**/Cargo.toml'
       - '**/Cargo.lock'
+  push:
+    branches: ["main"]
+    paths:
+      - '**/Cargo.toml'
+      - '**/Cargo.lock'
+  pull_request:
+    paths:
+      - '**/Cargo.toml'
+      - '**/Cargo.lock'
 
 jobs:
   security_audit:
