@@ -56,11 +56,11 @@ fn url_existing_file_does_not_exist_in_test_mode_test() -> Result<(), Box<dyn st
 fn url_existing_test() -> Result<(), Box<dyn std::error::Error>> {
     let mut cmd = Command::cargo_bin(KOJI_RETRIEVER_BINARY)?;
     cmd.arg("-u")
-        .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2166955")
+        .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2249970")
         .arg("-d")
         .arg("/tmp");
     cmd.assert().success().stdout(predicate::str::contains(
-        "/tmp/pykickstart-3.45-1.fc39.src.rpm",
+        "/tmp/pykickstart-3.48-3.fc39.src.rpm",
     ));
     Ok(())
 }
@@ -77,12 +77,12 @@ fn url_does_not_exist_test() -> Result<(), Box<dyn std::error::Error>> {
 fn url_existing_verbose_test() -> Result<(), Box<dyn std::error::Error>> {
     let mut cmd = Command::cargo_bin(KOJI_RETRIEVER_BINARY)?;
     cmd.arg("-u")
-        .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2166955")
+        .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2249970")
         .arg("-v")
         .arg("-d")
         .arg("/tmp");
     cmd.assert().success().stdout(predicate::str::contains(
-        "/tmp/pykickstart-3.45-1.fc39.src.rpm",
+        "/tmp/pykickstart-3.48-3.fc39.src.rpm",
     ));
     let standard_output = cmd
         .assert()
@@ -96,13 +96,13 @@ fn url_existing_verbose_test() -> Result<(), Box<dyn std::error::Error>> {
 fn url_existing_test_mode_verbose_test() -> Result<(), Box<dyn std::error::Error>> {
     let mut cmd = Command::cargo_bin(KOJI_RETRIEVER_BINARY)?;
     cmd.arg("-u")
-        .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2166955")
+        .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2249970")
         .arg("-v")
         .arg("-d")
         .arg("/tmp")
         .arg("-t");
     cmd.assert().success().stdout(predicate::str::contains(
-        "/tmp/pykickstart-3.45-1.fc39.src.rpm",
+        "/tmp/pykickstart-3.48-3.fc39.src.rpm",
     ));
     cmd.assert()
         .success()
@@ -119,12 +119,12 @@ fn url_existing_test_mode_verbose_test() -> Result<(), Box<dyn std::error::Error
 fn url_existing_slash_end_directory_test() -> Result<(), Box<dyn std::error::Error>> {
     let mut cmd = Command::cargo_bin(KOJI_RETRIEVER_BINARY)?;
     cmd.arg("-u")
-        .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2166955")
+        .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2249970")
         .arg("-v")
         .arg("-d")
         .arg("/tmp");
     cmd.assert().success().stdout(predicate::str::contains(
-        "/tmp/pykickstart-3.45-1.fc39.src.rpm",
+        "/tmp/pykickstart-3.48-3.fc39.src.rpm",
     ));
     Ok(())
 }
@@ -133,26 +133,26 @@ fn url_existing_slash_end_directory_test() -> Result<(), Box<dyn std::error::Err
 fn url_existing_files_exist_test() -> Result<(), Box<dyn std::error::Error>> {
     let mut cmd = Command::cargo_bin(KOJI_RETRIEVER_BINARY)?;
     cmd.arg("-u")
-        .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2166955")
+        .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2249970")
         .arg("-d")
         .arg("/tmp");
     cmd.assert().success().stdout(predicate::str::contains(
-        "/tmp/pykickstart-3.45-1.fc39.src.rpm",
+        "/tmp/pykickstart-3.48-3.fc39.src.rpm",
     ));
     let mut cmd_ls = Command::cargo_bin(LS_CMD)?;
-    cmd_ls.arg("/tmp/pykickstart-3.45-1.fc39.src.rpm");
+    cmd_ls.arg("/tmp/pykickstart-3.48-3.fc39.src.rpm");
     cmd.assert().success().stdout(predicate::str::contains(
-        "/tmp/pykickstart-3.45-1.fc39.src.rpm",
+        "/tmp/pykickstart-3.48-3.fc39.src.rpm",
     ));
     cmd_ls = Command::cargo_bin(LS_CMD)?;
-    cmd_ls.arg("/tmp/pykickstart-3.45-1.fc39.noarch.rpm");
+    cmd_ls.arg("/tmp/pykickstart-3.48-3.fc39.noarch.rpm");
     cmd.assert().success().stdout(predicate::str::contains(
-        "/tmp/pykickstart-3.45-1.fc39.noarch.rpm",
+        "/tmp/pykickstart-3.48-3.fc39.noarch.rpm",
     ));
     cmd_ls = Command::cargo_bin(LS_CMD)?;
-    cmd_ls.arg("/tmp/python3-kickstart-3.45-1.fc39.noarch.rpm");
+    cmd_ls.arg("/tmp/python3-kickstart-3.48-3.fc39.noarch.rpm");
     cmd.assert().success().stdout(predicate::str::contains(
-        "/tmp/python3-kickstart-3.45-1.fc39.noarch.rpm",
+        "/tmp/python3-kickstart-3.48-3.fc39.noarch.rpm",
     ));
     Ok(())
 }
