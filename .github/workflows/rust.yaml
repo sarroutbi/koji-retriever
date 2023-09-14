@@ -39,8 +39,8 @@ jobs:
         run: cargo test --verbose
       - name: Run tests (memory safety)
         run: |
-          type dnf 2>/dev/null 1>/dev/null && sudo dnf install -y valgrind || :
-          type apt 2>/dev/null 1>/dev/null && sudo apt install -y valgrind || :
+          type dnf && (sudo dnf update -y && sudo dnf install -y valgrind) || :
+          type apt && (sudo apt update -y && sudo apt upgrade -y && sudo apt install -y valgrind) || :
           cargo install cargo-valgrind
           cargo valgrind test --verbose
       - name: Clippy
