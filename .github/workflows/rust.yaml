@@ -29,6 +29,12 @@ jobs:
         stable: [true]
     steps:
       - uses: actions/checkout@v3
+      - name: Install build dependencies
+        run: bash .github/workflows/install-dependencies
+      - name: Setup toolchain (coverage)
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: clippy, rustfmt
       - name: Build (release)
         run: cargo build --release --verbose
       - name: Run tests (release)
@@ -39,8 +45,6 @@ jobs:
         run: cargo test --verbose
       - name: Run tests (memory safety)
         run: |
-          type dnf && (sudo dnf update -y && sudo dnf install -y valgrind) || :
-          type apt && (sudo apt update -y && sudo apt upgrade -y && sudo apt install -y valgrind) || :
           cargo install cargo-valgrind
           cargo valgrind test --verbose
       - name: Clippy
@@ -49,8 +53,6 @@ jobs:
         run: cargo fmt --all -- --check
       - name: Clean (coverage)
         run: cargo clean --verbose
-      - name: Setup toolchain (coverage)
-        uses: dtolnay/rust-toolchain@nightly
       - name: Install grcov (coverage)
         run: cargo install grcov --verbose
       - name: Run tests (coverage)
@@ -82,3 +84,10 @@ jobs:
           RUN_ID: ${{ github.run_id }}
           PULL_NUMBER: ${{ github.event.pull_request.number }}
           COV_REPORT_DIR: ${{ steps.coverage.outputs.report }}
+    container:
+      image: ${{matrix.os}}
+      env:
+        DISTRO: ${{matrix.os}}
+        run:
+          set -eu
+          echo "DISTRO:${DISTRO}"
