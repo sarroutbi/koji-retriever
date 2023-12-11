@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 assert_cmd = { version = "2.0.12" }
-clap = { version = "4.4.10", features = ["derive"] }
+clap = { version = "4.4.11", features = ["derive"] }
 curl = { version = "0.4.44" }
 lazy_static = { version = "1.4.0" }
 predicates = { version = "3.0.4" }
