@@ -116,7 +116,7 @@ fn download_file(url: &str, path: String) -> Result<(), Box<dyn std::error::Erro
     let mut curl = Easy::new();
     curl.url(url)?;
     File::create(&path)?;
-    let mut file = File::options().write(true).append(true).open(&path)?;
+    let mut file = File::options().append(true).open(&path)?;
     curl.write_function(move |data| {
         if let Err(e) = file.write_all(data) {
             println!("{}", &e);

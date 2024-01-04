@@ -30,6 +30,7 @@ after a package build process.
 - 0.1.0:  First version
 - 0.2.0:  Test mode (-t). Allows testing package access without downloading
 - 0.3.0:  Code refactoring
+- 0.4.0:  Fix cargo clippy error
 
 ## Compilation
 
