@@ -13,9 +13,9 @@ dependencies = [
 
 [[package]]
 name = "anstream"
-version = "0.6.3"
+version = "0.6.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "83d7b3983a025adeb201ef26a5564ebd1641ea9851f6282aee4940f745a3c07c"
+checksum = "3fde6067df7359f2d6335ec1a50c1f8f825801687d10da0cc4c6b08e3f6afd15"
 dependencies = [
  "anstyle",
  "anstyle-parse",
@@ -100,9 +100,9 @@ checksum = "2fff2a6927b3bb87f9595d67196a70493f627687a71d87a0d692242c33f58c11"
 
 [[package]]
 name = "clap"
-version = "4.4.14"
+version = "4.4.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33e92c5c1a78c62968ec57dbc2440366a2d6e5a23faf829970ff1585dc6b18e2"
+checksum = "1e578d6ec4194633722ccf9544794b71b1385c3c027efe0c55db226fc880865c"
 dependencies = [
  "clap_builder",
  "clap_derive",
@@ -110,9 +110,9 @@ dependencies = [
 
 [[package]]
 name = "clap_builder"
-version = "4.4.14"
+version = "4.4.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f4323769dc8a61e2c39ad7dc26f6f2800524691a44d74fe3d1071a5c24db6370"
+checksum = "4df4df40ec50c46000231c914968278b1eb05098cf8f1b3a518a95030e71d1c7"
 dependencies = [
  "anstream",
  "anstyle",
