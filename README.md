@@ -51,7 +51,7 @@ $ cargo build --release
 
 $ ./target/debug/koji-retriever -h
 
-koji-retriever 0.3.0
+koji-retriever 0.4.0
 
 USAGE:
     koji-retriever [OPTIONS] --url <URL>
