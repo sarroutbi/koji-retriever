@@ -112,7 +112,7 @@ test verbose_default_test ... ok
 test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 ```
 
-Option to execute tests in release mode is also possible through *--release* option:
+An option to execute tests in release mode is also possible through *--release* option:
 ```bash
 $ cargo test --release
 ```
@@ -134,7 +134,8 @@ $ export RUSTFLAGS="-Cinstrument-coverage"
 $ export LLVM_PROFILE_FILE="koji-retriever-%p-%m.profraw"
 ```
 
-- Finally, execute tests through *cargo test*, generate report with *grcov* (in HTML mode for this example) and open it with your preferred browser:
+- Finally, tests must be executed through *cargo test*, and report must be generated with *grcov* (in HTML mode for this example).
+Last, but not least, the report can be opened with your preferred browser:
 
 ```bash
 $ cargo test
