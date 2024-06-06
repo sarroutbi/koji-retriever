@@ -134,7 +134,7 @@ $ export RUSTFLAGS="-Cinstrument-coverage"
 $ export LLVM_PROFILE_FILE="koji-retriever-%p-%m.profraw"
 ```
 
-- Finally, execute tests via *cargo test*, generate report with *grcov* (in HTML mode for this example) and open it with your preferred browser:
+- Finally, execute tests through *cargo test*, generate report with *grcov* (in HTML mode for this example) and open it with your preferred browser:
 
 ```bash
 $ cargo test
