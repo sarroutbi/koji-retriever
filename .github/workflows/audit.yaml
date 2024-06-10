@@ -1,6 +1,6 @@
 ---
 name: Security audit
-on:
+"on":
   workflow_dispatch:
     paths:
       - '**/Cargo.toml'

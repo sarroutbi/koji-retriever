@@ -1,7 +1,7 @@
 ---
 name: "Rust"
 
-on:
+"on":
   push:
     branches: ["main"]
     paths-ignore:
@@ -59,15 +59,23 @@ jobs:
         run: cargo test --all --no-fail-fast
         env:
           CARGO_INCREMENTAL: '0'
-          RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests -Cinstrument-coverage'
-          RUSTDOCFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests -Cinstrument-coverage'
+          RUSTFLAGS: >
+            -Zprofile -Ccodegen-units=1 -Cinline-threshold=0
+            -Clink-dead-code -Coverflow-checks=off -Cpanic=abort
+            -Zpanic_abort_tests -Cinstrument-coverage
+          RUSTDOCFLAGS: >
+            -Zprofile -Ccodegen-units=1 -Cinline-threshold=0
+            -Clink-dead-code -Coverflow-checks=off -Cpanic=abort
+            -Zpanic_abort_tests -Cinstrument-coverage
       - name: Gather data (coverage)
         id: coverage
         uses: sarroutbi/grcov@v0.1.6
       - name: Output show (coverage)
         run: |
           set -eu
-          echo "COVERAGE:$(cat ${COV_REPORT_DIR}/badges/flat.svg | egrep '<title>coverage: ' | egrep -o "[0-9]{1,2}%" | sed 's/ //g')"
+          echo "COVERAGE:$(cat ${COV_REPORT_DIR}/badges/flat.svg \
+                | egrep '<title>coverage: ' | egrep -o "[0-9]{1,2}%" \
+                | sed 's/ //g')"
         env:
           COV_REPORT_DIR: ${{ steps.coverage.outputs.report }}
       - name: Report in PR status for the current commit (coverage)
@@ -75,7 +83,9 @@ jobs:
         run: |
           set -eu
           tree ${COV_REPORT_DIR}
-          total=$(cat ${COV_REPORT_DIR}/badges/flat.svg | egrep '<title>coverage: ' | egrep -o "[0-9]{1,2}" | sed 's/ //g')
+          total=$(cat ${COV_REPORT_DIR}/badges/flat.svg | \
+                  egrep '<title>coverage: ' | \
+                  egrep -o "[0-9]{1,2}" | sed 's/ //g')
           curl -s "https://sarroutbi:${GITHUB_TOKEN}@api.github.com/repos/sarroutbi/koji-retriever/statuses/${COMMIT_SHA}"\
             -d "{\"state\": \"success\",\"target_url\": \"https://github.com/sarroutbi/koji-retriever/pull/${PULL_NUMBER}/checks?check_run_id=${RUN_ID}\",\"description\": \"${total}%\",\"context\": \"Measured coverage\"}"
         env:
