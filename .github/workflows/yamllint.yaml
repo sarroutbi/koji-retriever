@@ -27,7 +27,7 @@ jobs:
       - name: 'Yamllint (actions)'
         uses: karancode/yamllint-github-action@master
         with:
-          yamllint_file_or_dir: '.github/actions-rs/*.yaml'
+          yamllint_file_or_dir: '.github/actions-rs/*.yml'
           yamllint_strict: false
           yamllint_comment: true
         env:
