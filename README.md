@@ -34,7 +34,7 @@ after a package build process.
 
 ## Compilation
 
-Compilation in koji-retriever is executed through *cargo* tool, as usual in Rust:
+koji-retriever can be compiled through *cargo* tool, as usual in Rust:
 
 ```bash
 $ cargo build
