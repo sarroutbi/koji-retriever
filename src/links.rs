@@ -26,6 +26,7 @@ use std::io::Write;
 
 use super::verbose;
 
+const DOWNLOAD_DEVEL_REDHAT: &str = "download.devel.redhat.com";
 const DOWNLOAD_REDHAT: &str = "download.eng.bos.redhat.com";
 const DOWNLOAD_KOJIHUB: &str = "kojihub.stream.rdu2.redhat.com";
 const FEDORA_PROJECT: &str = "fedoraproject.org";
@@ -58,6 +59,7 @@ pub fn get_link_lines(body: String) -> Vec<String> {
         if s.contains(LINK_HTML)
             && s.contains(RPM_EXTENSION)
             && (s.contains(FEDORA_PROJECT)
+                || s.contains(DOWNLOAD_DEVEL_REDHAT)
                 || s.contains(DOWNLOAD_REDHAT)
                 || s.contains(DOWNLOAD_KOJIHUB))
         {
