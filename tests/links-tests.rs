@@ -24,6 +24,8 @@ mod links;
 #[path = "../src/verbose.rs"]
 mod verbose;
 
+const DST_DIR: &str = "/tmp";
+
 const BODY: &str = "<html>
 <head>Head</head>
 <body>
@@ -44,7 +46,7 @@ fn links_downloadable_link_test() {
     match links::download_links(
         links::get_links(links::get_link_lines(String::from(BODY))),
         links::DownloadData::new(
-            std::option::Option::Some::<String>("/tmp".to_string()),
+            std::option::Option::Some::<String>(DST_DIR.to_string()),
             false,
         ),
     ) {
@@ -59,7 +61,7 @@ fn links_not_dowloadable_link_test() {
     match links::download_links(
         links::get_links(links::get_link_lines(String::from(BODY_NOT_DOWNLOADABLE))),
         links::DownloadData::new(
-            std::option::Option::Some::<String>("/tmp".to_string()),
+            std::option::Option::Some::<String>(DST_DIR.to_string()),
             false,
         ),
     ) {
