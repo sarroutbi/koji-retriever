@@ -36,25 +36,25 @@ jobs:
         with:
           components: clippy, rustfmt
       - name: Build (release)
-        run: cargo build --release --verbose
+        run: cargo build --release
       - name: Run tests (release)
-        run: cargo test --release --verbose
+        run: cargo test --release
       - name: Build
-        run: cargo build --verbose
+        run: cargo build
       - name: Run tests
-        run: cargo test --verbose
+        run: cargo test
       - name: Run tests (memory safety)
         run: |
           cargo install cargo-valgrind
-          cargo valgrind test --verbose
+          cargo valgrind test
       - name: Clippy
-        run: cargo clippy --verbose -- --deny "warnings"
+        run: cargo clippy -- --deny "warnings"
       - name: Check formatting
         run: cargo fmt --all -- --check
       - name: Clean (coverage)
-        run: cargo clean --verbose
+        run: cargo clean
       - name: Install grcov (coverage)
-        run: cargo install grcov --verbose
+        run: cargo install grcov
       - name: Run tests (coverage)
         run: cargo test --all --no-fail-fast
         env:
