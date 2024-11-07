@@ -22,9 +22,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-COMMON="git file bzip2 g++ pkg-config openssl valgrind tree"
+COMMON="git file bzip2 g++ pkg-config openssl valgrind tree jq"
 DEBIAN_UBUNTU="curl libssl-dev"
-FEDORA_CENTOS="openssl-devel"
+FEDORA_CENTOS="openssl-devel openssl-libs"
 
 case "${DISTRO}" in
 debian:*|ubuntu:*)
@@ -48,4 +48,8 @@ esac
 echo "================= SYSTEM ================="
 cat /etc/os-release
 uname -a
+# For cargo-tarpaulin
+libssl_where=$(find /usr/lib* -iname "libssl.so" | tail -1)
+ln -s "${libssl_where}" /usr/lib64/libssl.so.1.1
+ls -l /usr/lib64/libssl.so.1.1
 echo "=========================================="
