@@ -5,10 +5,10 @@ name: 'Yamllint'
     branches:
       - main
     paths-ignore:
-      - '**.yml'
+      - '**.md'
   pull_request:
     paths-ignore:
-      - '**.yml'
+      - '**.md'
 jobs:
   yamllint:
     name: 'Yamllint'
