@@ -5,8 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Status
-
-[![Coverage](https://github.com/sarroutbi/koji-retriever/actions/workflows/coverage.yaml/badge.svg)](https://github.com/sarroutbi/koji-retriever/actions/workflows/coverage.yaml)\
+[![Coverage](https://github.com/sarroutbi/koji-retriever/actions/workflows/coverage.yml/badge.svg)](https://github.com/sarroutbi/koji-retriever/actions/workflows/coverage.yml)\
 [![Rust](https://github.com/sarroutbi/koji-retriever/actions/workflows/rust.yaml/badge.svg)](https://github.com/sarroutbi/koji-retriever/actions/workflows/rust.yaml)\
 [![Security audit](https://github.com/sarroutbi/koji-retriever/actions/workflows/audit.yaml/badge.svg)](https://github.com/sarroutbi/koji-retriever/actions/workflows/audit.yaml)\
 [![Spellcheck](https://github.com/sarroutbi/koji-retriever/actions/workflows/spellcheck.yaml/badge.svg)](https://github.com/sarroutbi/koji-retriever/actions/workflows/spellcheck.yaml)
