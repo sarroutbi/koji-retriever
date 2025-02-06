@@ -31,6 +31,7 @@ after a package build process.
 - 0.2.0:  Test mode (-t). Allows testing package access without downloading
 - 0.3.0:  Code refactoring
 - 0.4.0:  Fix cargo clippy error
+- 0.5.0:  Filter mode (-f). Allows providing a filter to only download packages whose URLs match the filter
 
 ## Compilation
 
@@ -58,6 +59,7 @@ USAGE:
 
 OPTIONS:
     -d, --directory <DIRECTORY>
+    -f, --filter    <FILTER>
     -h, --help                     Print help information
     -t, --test
     -u, --url <URL>

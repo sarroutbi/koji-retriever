@@ -37,6 +37,7 @@ const RPM_EXTENSION: &str = ".rpm";
 pub struct DownloadData {
     directory: Option<String>,
     test: bool,
+    filter: Option<String>,
 }
 
 impl DownloadData {
@@ -46,8 +47,12 @@ impl DownloadData {
     pub fn test(&self) -> bool {
         self.test
     }
-    pub fn new(directory: Option<String>, test: bool) -> DownloadData {
-        DownloadData { directory, test }
+    pub fn new(directory: Option<String>, test: bool, filter: Option<String>) -> DownloadData {
+        DownloadData {
+            directory,
+            test,
+            filter,
+        }
     }
 }
 
@@ -101,16 +106,32 @@ pub fn download_links(links: Vec<String>, ddata: DownloadData) -> Result<u32, &'
             println!("Test mode: file:{} path:{}", l, download_path);
         } else {
             println!("Download file:{} Download path:{}", l, download_path);
-            if download_file(l, download_path).is_err() {
-                println!("Unable to download link:{}", l);
-            } else {
-                downloaded += 1;
+            match ddata.filter {
+                Some(ref f) => {
+                    if l.contains(f) {
+                        if download_file(l, download_path.clone()).is_err() {
+                            println!("Unable to download link:{}", l);
+                        } else {
+                            downloaded += 1;
+                        }
+                    } else {
+                        println!("Not downloading, :{} does not contain filter:{}", l, f);
+                    }
+                }
+                None => {
+                    if download_file(l, download_path.clone()).is_err() {
+                        println!("Unable to download link:{}", l);
+                    } else {
+                        downloaded += 1;
+                    }
+                }
             }
         }
     }
-    if !links.is_empty() && 0 == downloaded && !ddata.test {
+    if !links.is_empty() && 0 == downloaded && !ddata.test && ddata.filter.is_none() {
         return Err("Unable to download any link");
     }
+    verbose::dump_verbose(&("Downloaded files:".to_owned() + &downloaded.to_string()));
     Ok(downloaded)
 }
 

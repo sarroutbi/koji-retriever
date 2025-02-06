@@ -33,6 +33,18 @@ const BODY: &str = "<html>
 </body>
 </html>";
 
+const BODY2: &str = "<html>
+<head>Head</head>
+<body>
+<a href=\"https://kojipkgs.fedoraproject.org/packages/pykickstart/3.45/1.fc39/src/pykickstart-3.45-1.fc39.src.rpm\">download</a>
+<a href=\"https://kojipkgs.fedoraproject.org/packages/pykickstart/3.62/1.fc42/src/pykickstart-3.62-1.fc42.src.rpm\">download</a>
+</body>
+</html>";
+
+const FILTER2: &str = "/3.62/";
+
+const UNEXISTING_FILTER: &str = "/99.999.9999.99999/";
+
 const BODY_NOT_DOWNLOADABLE: &str = "<html>
 <head>Head</head>
 <body>
@@ -48,9 +60,37 @@ fn links_downloadable_link_test() {
         links::DownloadData::new(
             std::option::Option::Some::<String>(DST_DIR.to_string()),
             false,
+            std::option::Option::None::<String>,
         ),
     ) {
         Ok(d) => assert_eq!(d, 1),
+        Err(_e) => assert_eq!(0, 1),
+    }
+}
+
+#[test]
+fn links_downloadable_link_test_filter() {
+    verbose::is_verbose(false);
+    match links::download_links(
+        links::get_links(links::get_link_lines(String::from(BODY2))),
+        links::DownloadData::new(
+            std::option::Option::Some::<String>(DST_DIR.to_string()),
+            false,
+            std::option::Option::Some::<String>(FILTER2.to_string()),
+        ),
+    ) {
+        Ok(d) => assert_eq!(d, 1),
+        Err(_e) => assert_eq!(0, 1),
+    }
+    match links::download_links(
+        links::get_links(links::get_link_lines(String::from(BODY2))),
+        links::DownloadData::new(
+            std::option::Option::Some::<String>(DST_DIR.to_string()),
+            false,
+            std::option::Option::Some::<String>(UNEXISTING_FILTER.to_string()),
+        ),
+    ) {
+        Ok(d) => assert_eq!(d, 0),
         Err(_e) => assert_eq!(0, 1),
     }
 }
@@ -63,6 +103,7 @@ fn links_not_dowloadable_link_test() {
         links::DownloadData::new(
             std::option::Option::Some::<String>(DST_DIR.to_string()),
             false,
+            std::option::Option::None::<String>,
         ),
     ) {
         Ok(d) => assert_eq!(d, 0),

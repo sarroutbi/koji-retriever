@@ -32,6 +32,8 @@ struct Args {
     #[clap(short, long, value_parser)]
     url: String,
     #[clap(short, long, value_parser)]
+    filter: Option<String>,
+    #[clap(short, long, value_parser)]
     verbose: bool,
     #[clap(short, long, value_parser)]
     directory: Option<String>,
@@ -43,7 +45,11 @@ fn parse(body: String) -> u32 {
     verbose::is_verbose(Args::parse().verbose);
     match links::download_links(
         links::get_links(links::get_link_lines(body)),
-        links::DownloadData::new(Args::parse().directory, Args::parse().test),
+        links::DownloadData::new(
+            Args::parse().directory,
+            Args::parse().test,
+            Args::parse().filter,
+        ),
     ) {
         Ok(d) => d,
         Err(e) => {
