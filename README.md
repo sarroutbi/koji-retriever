@@ -50,21 +50,23 @@ $ cargo build --release
 
 ```bash
 
+$ ./target/debug/koji-retriever -V
+
+koji-retriever 0.5.0
+
 $ ./target/debug/koji-retriever -h
 
-koji-retriever 0.4.0
-
 USAGE:
-    koji-retriever [OPTIONS] --url <URL>
+     koji-retriever [OPTIONS] --url <URL>
 
 OPTIONS:
-    -d, --directory <DIRECTORY>
-    -f, --filter    <FILTER>
-    -h, --help                     Print help information
-    -t, --test
     -u, --url <URL>
+    -f, --filter <FILTER>
+    -d, --directory <DIRECTORY>
+    -t, --test
+    -h, --help                   Print help
+    -V, --version                Print version
     -v, --verbose
-    -V, --version                  Print version information
 ```
 
 ## Tests
