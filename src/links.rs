@@ -109,7 +109,7 @@ pub fn download_links(links: Vec<String>, ddata: DownloadData) -> Result<u32, &'
         }
     }
     if !links.is_empty() && 0 == downloaded && !ddata.test {
-        return Err("Unable to download any link");
+        return Err("Unable to download any of the links");
     }
     Ok(downloaded)
 }
