@@ -38,6 +38,7 @@ pub struct DownloadData {
     directory: Option<String>,
     test: bool,
     filter: Option<String>,
+    redirect: bool,
 }
 
 impl DownloadData {
@@ -47,11 +48,17 @@ impl DownloadData {
     pub fn test(&self) -> bool {
         self.test
     }
-    pub fn new(directory: Option<String>, test: bool, filter: Option<String>) -> DownloadData {
+    pub fn new(
+        directory: Option<String>,
+        test: bool,
+        filter: Option<String>,
+        redirect: bool,
+    ) -> DownloadData {
         DownloadData {
             directory,
             test,
             filter,
+            redirect,
         }
     }
 }
@@ -103,24 +110,24 @@ pub fn download_links(links: Vec<String>, ddata: DownloadData) -> Result<u32, &'
         }
         download_path.push_str(&lname.to_owned());
         if ddata.test() {
-            println!("Test mode: file:{} path:{}", l, download_path);
+            println!("Test mode: file:{l} path:{download_path}");
         } else {
-            println!("Download file:{} Download path:{}", l, download_path);
+            println!("Download file:{l} Download path:{download_path}");
             match ddata.filter {
                 Some(ref f) => {
                     if l.contains(f) {
-                        if download_file(l, download_path.clone()).is_err() {
-                            println!("Unable to download link:{}", l);
+                        if download_file(l, download_path.clone(), &ddata.redirect).is_err() {
+                            println!("Unable to download link:{l}");
                         } else {
                             downloaded += 1;
                         }
                     } else {
-                        println!("Not downloading, :{} does not contain filter:{}", l, f);
+                        println!("Not downloading, :{l} does not contain filter:{f}");
                     }
                 }
                 None => {
-                    if download_file(l, download_path.clone()).is_err() {
-                        println!("Unable to download link:{}", l);
+                    if download_file(l, download_path.clone(), &ddata.redirect).is_err() {
+                        println!("Unable to download link:{l}");
                     } else {
                         downloaded += 1;
                     }
@@ -135,9 +142,16 @@ pub fn download_links(links: Vec<String>, ddata: DownloadData) -> Result<u32, &'
     Ok(downloaded)
 }
 
-fn download_file(url: &str, path: String) -> Result<(), Box<dyn std::error::Error>> {
+fn download_file(
+    url: &str,
+    path: String,
+    redirect: &bool,
+) -> Result<(), Box<dyn std::error::Error>> {
     let mut curl = Easy::new();
     curl.url(url)?;
+    if *redirect {
+        curl.follow_location(true)?;
+    }
     File::create(&path)?;
     let mut file = File::options().append(true).open(&path)?;
     curl.write_function(move |data| {

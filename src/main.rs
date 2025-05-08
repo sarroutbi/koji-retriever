@@ -39,6 +39,8 @@ struct Args {
     directory: Option<String>,
     #[clap(short, long, value_parser)]
     test: bool,
+    #[clap(short, long, value_parser, default_value_t = false)]
+    redirect: bool,
 }
 
 fn parse(body: String) -> u32 {
@@ -49,6 +51,7 @@ fn parse(body: String) -> u32 {
             Args::parse().directory,
             Args::parse().test,
             Args::parse().filter,
+            Args::parse().redirect,
         ),
     ) {
         Ok(d) => d,
