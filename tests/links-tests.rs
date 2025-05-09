@@ -61,6 +61,7 @@ fn links_downloadable_link_test() {
             std::option::Option::Some::<String>(DST_DIR.to_string()),
             false,
             std::option::Option::None::<String>,
+            true,
         ),
     ) {
         Ok(d) => assert_eq!(d, 1),
@@ -77,6 +78,7 @@ fn links_downloadable_link_test_filter() {
             std::option::Option::Some::<String>(DST_DIR.to_string()),
             false,
             std::option::Option::Some::<String>(FILTER2.to_string()),
+            true,
         ),
     ) {
         Ok(d) => assert_eq!(d, 1),
@@ -88,6 +90,7 @@ fn links_downloadable_link_test_filter() {
             std::option::Option::Some::<String>(DST_DIR.to_string()),
             false,
             std::option::Option::Some::<String>(UNEXISTING_FILTER.to_string()),
+            true,
         ),
     ) {
         Ok(d) => assert_eq!(d, 0),
@@ -104,6 +107,7 @@ fn links_not_dowloadable_link_test() {
             std::option::Option::Some::<String>(DST_DIR.to_string()),
             false,
             std::option::Option::None::<String>,
+            true,
         ),
     ) {
         Ok(d) => assert_eq!(d, 0),

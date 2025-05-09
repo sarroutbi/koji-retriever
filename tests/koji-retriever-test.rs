@@ -135,7 +135,8 @@ fn url_existing_files_exist_test() -> Result<(), Box<dyn std::error::Error>> {
     cmd.arg("-u")
         .arg("https://koji.fedoraproject.org/koji/buildinfo?buildID=2249970")
         .arg("-d")
-        .arg("/tmp");
+        .arg("/tmp")
+        .arg("-r");
     cmd.assert().success().stdout(predicate::str::contains(
         "/tmp/pykickstart-3.48-3.fc39.src.rpm",
     ));

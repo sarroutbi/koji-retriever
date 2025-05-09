@@ -37,7 +37,7 @@ pub fn is_verbose(v: bool) {
 
 pub fn dump_verbose(s: &String) {
     if VERBOSE.lock().unwrap().verbose {
-        println!("{}", s);
+        println!("{s}");
     }
 }
 

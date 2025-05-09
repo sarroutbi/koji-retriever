@@ -34,6 +34,7 @@ after a package build process.
 - 0.3.0:  Code refactoring
 - 0.4.0:  Fix cargo clippy error
 - 0.5.0:  Filter mode (-f). Allows providing a filter to only download packages whose URLs match the filter
+- 0.6.0:  Add redirect mode (-r). Perform link following on redirects
 
 ## Compilation
 
@@ -65,6 +66,7 @@ OPTIONS:
     -u, --url <URL>
     -f, --filter <FILTER>
     -d, --directory <DIRECTORY>
+    -r, --redirect
     -t, --test
     -h, --help                   Print help
     -V, --version                Print version
