@@ -18,7 +18,7 @@ jobs:
   tests-coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install build dependencies
         run: bash .github/workflows/install-dependencies
       - name: Setup toolchain (coverage)
