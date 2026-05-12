@@ -156,7 +156,7 @@ fn download_file(
     let mut file = File::options().append(true).open(&path)?;
     curl.write_function(move |data| {
         if let Err(e) = file.write_all(data) {
-            println!("{}", &e);
+            println!("{}", e);
             panic!();
         }
         Ok(data.len())
