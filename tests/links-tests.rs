@@ -45,6 +45,13 @@ const FILTER2: &str = "/3.62/";
 
 const UNEXISTING_FILTER: &str = "/99.999.9999.99999/";
 
+const BODY_BREWWEB: &str = "<html>
+<head>Head</head>
+<body>
+<a href=\"https://download-01.beak-001.prod.iad2.dc.redhat.com/brewroot/vol/rhel-10/packages/libcap-ng/0.9.3/1.el10/src/libcap-ng-0.9.3-1.el10.src.rpm\">download</a>
+</body>
+</html>";
+
 const BODY_NOT_DOWNLOADABLE: &str = "<html>
 <head>Head</head>
 <body>
@@ -96,6 +103,17 @@ fn links_downloadable_link_test_filter() {
         Ok(d) => assert_eq!(d, 0),
         Err(_e) => assert_eq!(0, 1),
     }
+}
+
+#[test]
+fn links_brewweb_link_test() {
+    verbose::is_verbose(false);
+    let link_lines = links::get_link_lines(String::from(BODY_BREWWEB));
+    assert_eq!(link_lines.len(), 1);
+    let extracted_links = links::get_links(link_lines);
+    assert_eq!(extracted_links.len(), 1);
+    assert!(extracted_links[0].contains("dc.redhat.com"));
+    assert!(extracted_links[0].contains(".rpm"));
 }
 
 #[test]
