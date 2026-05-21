@@ -29,6 +29,7 @@ use super::verbose;
 const DOWNLOAD_DEVEL_REDHAT: &str = "download.devel.redhat.com";
 const DOWNLOAD_REDHAT: &str = "download.eng.bos.redhat.com";
 const DOWNLOAD_KOJIHUB: &str = "kojihub.stream.rdu2.redhat.com";
+const DOWNLOAD_BREWWEB: &str = "dc.redhat.com";
 const FEDORA_PROJECT: &str = "fedoraproject.org";
 const LINK_HTML: &str = "<a href";
 const LINK_HTML_EQUAL: &str = "<a href=";
@@ -73,7 +74,8 @@ pub fn get_link_lines(body: String) -> Vec<String> {
             && (s.contains(FEDORA_PROJECT)
                 || s.contains(DOWNLOAD_DEVEL_REDHAT)
                 || s.contains(DOWNLOAD_REDHAT)
-                || s.contains(DOWNLOAD_KOJIHUB))
+                || s.contains(DOWNLOAD_KOJIHUB)
+                || s.contains(DOWNLOAD_BREWWEB))
         {
             verbose::dump_verbose(&("get_link_lines: LINK LINE:".to_owned() + s));
             lines.push(s.to_string());

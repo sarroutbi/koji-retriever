@@ -1,3 +1,7 @@
+ai
+AI
+claude
+CLAUDE
 CLI
 CLIPPY
 clippy
@@ -7,3 +11,7 @@ koji
 koji-retriever
 llvm
 Markdown
+markdown
+md
+Mutex
+mutex
